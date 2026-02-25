@@ -1,10 +1,13 @@
 package edu.remington.holamundo.service;
 
-import org.hibernate.query.Page;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import edu.remington.holamundo.Repository.AcudienteRepository;
 import edu.remington.holamundo.dto.AcudienteResponse;
+import edu.remington.holamundo.dto.AcudienteRequest;
+import edu.remington.holamundo.exception.ResourceNotFoundException;
 import edu.remington.holamundo.model.Acudiente;
 
 
