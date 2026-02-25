@@ -9,5 +9,5 @@ import edu.remington.holamundo.model.Animal;
 
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
     
-    Page<Animal> findByNombreid(Long nombreid, Pageable pagea);
+    Page<Animal> findByAcudienteId(Long acudienteId, Pageable pageable);
 }
