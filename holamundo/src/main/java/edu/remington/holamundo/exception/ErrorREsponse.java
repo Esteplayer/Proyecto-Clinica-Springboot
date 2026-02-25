@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 public class ErrorREsponse {
 
-    private LocalDataTime timestamp;
+    private LocalDateTime timestamp;
     private int status;
     private String error;
     private String message;
