@@ -1,52 +1,55 @@
 package edu.remington.holamundo.service;
 
-import org.hibernate.query.Page;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import edu.remington.holamundo.Repository.AcudienteRepository;
 import edu.remington.holamundo.dto.AcudienteResponse;
+import edu.remington.holamundo.dto.AcudienteRequest;
+import edu.remington.holamundo.exception.ResourceNotFoundException;
 import edu.remington.holamundo.model.Acudiente;
-
-
 
 @Service
 @Transactional
 public class AcudienteService {
+
+
     private final AcudienteRepository acudienteRepository;
+
 
     public AcudienteService(AcudienteRepository acudienteRepository) {
         this.acudienteRepository = acudienteRepository;
     }
 
-    public AcudienteResponse crear(AcudienteRequest request) {
+
+
+    public AcudienteResponse crear(AcudienteRequest  request) {
         Acudiente acudiente = new Acudiente();
         applyRequest(acudiente, request);
         Acudiente saved = acudienteRepository.save(acudiente);
         return toResponse(saved);
     }
 
+
     @Transactional(readOnly = true)
     public Page<AcudienteResponse> listar(Pageable pageable) {
         return acudienteRepository.findAll(pageable).map(this::toResponse);
+            
     }
 
     @Transactional(readOnly = true)
-    public AcudienteResponse obtener(Long id) {
+    public AcudienteResponse obtenerPorId(Long id) {
         Acudiente acudiente = findAcudiente(id);
         return toResponse(acudiente);
     }
 
-    public void eliminar(Long id) {
-        Acudiente acudiente = findAcudiente(id);
-        acudienteRepository.delete(acudiente);
-    }
-
-    private Acudiente findAcudiente(Long id) {
+    private Acudiente findAcudiente(long id) {
         return acudienteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Acudiente no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Acudiente no encontrado con id: " + id));
     }
 
-    private void applyRequest(Acudiente acudiente, AcudienteRequest request) {
+    private void applyRequest (Acudiente acudiente, AcudienteRequest request) {
         acudiente.setNombre(request.getNombre());
         acudiente.setDocumento(request.getDocumento());
         acudiente.setTelefono(request.getTelefono());
@@ -56,7 +59,7 @@ public class AcudienteService {
         acudiente.setDireccion(request.getDireccion());
     }
 
-    private AcudienteResponse toResponse(Acudiente acudiente) {
+    public AcudienteResponse toResponse(Acudiente acudiente) {
         AcudienteResponse response = new AcudienteResponse();
         response.setId(acudiente.getId());
         response.setNombre(acudiente.getNombre());
@@ -67,5 +70,6 @@ public class AcudienteService {
         response.setEmail2(acudiente.getEmail2());
         response.setDireccion(acudiente.getDireccion());
         return response;
+
     }
 }

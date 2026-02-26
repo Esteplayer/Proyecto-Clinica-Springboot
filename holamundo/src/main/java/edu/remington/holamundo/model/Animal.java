@@ -39,7 +39,7 @@ public class Animal {
     private String raza;
 
     @Column(nullable = false)
-    private String edad;
+    private int edad;
 
     @Column(nullable = false)
     private String peso;
